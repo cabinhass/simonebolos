@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simone Bolos - Cardápio Digital Profissional</title>
+    <!-- Link para o CDN do Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define a fonte Inter para todo o corpo do documento */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fce4ec; /* Cor de fundo suave */
+        }
+        /* Estilos personalizados para o cardápio */
+        .menu-card {
+            background-color: #ffffff;
+            border-radius: 1.5rem; /* Cantos mais arredondados */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 900px;
+            width: 95%; /* Largura fluida para responsividade */
+        }
+        .section-title {
+            color: #d81b60; /* Cor de destaque para títulos */
+            border-bottom: 2px solid #f8bbd0; /* Linha de separação */
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: flex; /* Para alinhar título com ícone/imagem */
+            align-items: center;
+            gap: 0.75rem; /* Espaçamento entre título e ícone */
+        }
+        .item-name {
+            color: #4a4a4a;
+        }
+        .item-price {
+            color: #d81b60;
+            font-weight: 600;
+        }
+        /* Estilo para ícones/emojis */
+        .icon {
+            font-size: 1.5rem;
+            margin-right: 0.75rem;
+        }
+        /* Estilos para a seção de orçamento */
+        .quote-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .quote-item input[type="checkbox"] {
+            margin-right: 1rem;
+            transform: scale(1.2); /* Aumenta o tamanho do checkbox */
+        }
+        .quote-item select {
+            margin-left: 1rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #d81b60;
+            background-color: #f8bbd0;
+            color: #d81b60;
+            font-weight: 600;
+        }
+        .total-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #d81b60;
+            text-align: right;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px dashed #f8bbd0;
+        }
+        /* Estilo para o botão de pedido */
+        .order-button {
+            background-color: #d81b60; /* Cor de fundo do botão */
+            color: #ffffff; /* Cor do texto */
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px; /* Cantos bem arredondados (pill shape) */
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            cursor: pointer;
+            width: fit-content;
+            margin: 1.5rem auto 0 auto; /* Centraliza o botão */
+            display: block; /* Garante que o margin auto funcione */
+        }
+        .order-button:hover {
+            background-color: #a00037; /* Cor mais escura ao passar o mouse */
+            transform: translateY(-2px); /* Efeito de "levantar" */
+        }
+        .order-button:active {
+            transform: translateY(0); /* Efeito de "pressionar" */
+        }
+        /* Estilo para as imagens das seções */
+        .section-image {
+            border-radius: 1rem; /* Cantos arredondados para as imagens */
+            margin-bottom: 1.5rem;
+            width: 100%; /* Garante que a imagem seja responsiva */
+            height: auto;
+            object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Sombra suave */
+        }
+        /* Estilo para a lista de formas de pagamento e opções de entrega */
+        .option-item {
+            display: flex;
+            align-items: center;
+            font-size: 1.125rem; /* text-lg */
+            color: #4a4a4a;
+            margin-bottom: 0.75rem;
+        }
+        .option-item .icon {
+            font-size: 1.75rem; /* Ícone um pouco maior */
+            margin-right: 1rem;
+        }
+        .option-item input[type="radio"] {
+            margin-right: 0.75rem;
+            transform: scale(1.2); /* Aumenta o tamanho do radio button */
+        }
+        .address-input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #d81b60;
+            margin-top: 1rem;
+            font-size: 1rem;
+        }
+        .pickup-address {
+            background-color: #ffebee;
+            border: 1px dashed #d81b60;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-top: 1rem;
+            font-size: 1rem;
+            color: #4a4a4a;
+        }
+
+        /* Estilos para as abas */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* Permite que as abas quebrem a linha em telas pequenas */
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #f8bbd0;
+        }
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #d81b60;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem; /* Espaçamento entre os botões */
+        }
+        .tab-button:hover {
+            color: #a00037;
+            border-bottom-color: #f8bbd0;
+        }
+        .tab-button.active {
+            color: #a00037;
+            border-bottom-color: #d81b60;
+            background-color: #ffebee;
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+        .tab-content {
+            display: none; /* Esconde todas as abas por padrão */
+        }
+        .tab-content.active {
+            display: block; /* Mostra a aba ativa */
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+
+    <div class="menu-card">
+        <!-- Cabeçalho do Cardápio -->
+        <header class="text-center mb-8">
+            <h1 class="text-5xl font-extrabold text-pink-700 mb-2">🍰 Simone Bolos 💖</h1>
+            <p class="text-xl text-gray-600">Cada pedacinho, feito com muito carinho para adoçar o seu dia!</p>
+        </header>
+
+        <!-- Imagem de Confeitaria Principal -->
+        <img src="https://placehold.co/900x300/f8bbd0/d81b60?text=Confeitaria+Simone+Bolos" 
+             alt="Confeitaria Simone Bolos" 
+             class="section-image mb-8"
+             onerror="this.onerror=null;this.src='https://placehold.co/900x300/f8bbd0/d81b60?text=Erro+ao+carregar+imagem';"
+        >
+
+        <!-- Controles de Abas -->
+        <div class="tabs-container">
+            <button class="tab-button active" data-tab="bolosCaseiros">Bolos Caseiros</button>
+            <button class="tab-button" data-tab="bolosVulcao">Bolos Vulcão</button>
+            <button class="tab-button" data-tab="bolosAniversario">Bolos de Aniversário</button>
+            <button class="tab-button" data-tab="docesEspeciais">Doces Especiais</button>
+            <button class="tab-button" data-tab="caixaDocinhos">Caixa de Docinhos</button>
+        </div>
+
+        <!-- Conteúdo das Abas -->
+        <div id="bolosCaseiros" class="tab-content active">
+            <section class="mb-8">
+                <h2 class="text-3xl font-bold section-title">Bolos Caseiros 🏡</h2>
+                <img src="https://placehold.co/800x250/f8bbd0/d81b60?text=Bolos+Caseiros" 
+                     alt="Bolos Caseiros" 
+                     class="section-image"
+                     onerror="this.onerror=null;this.src='https://placehold.co/800x250/f8bbd0/d81b60?text=Erro+ao+carregar+imagem';"
+                >
+                <p class="text-gray-700 mb-4">Os clássicos que nos lembram a casa da vovó. Perfeitos para o café da tarde ou para qualquer momento especial.</p>
+                <ul class="space-y-3">
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🌽</span> Bolo de Milho</span>
+                        <span class="item-price">R$ 20,00</span>
+                    </li>
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🍮</span> Bolo Mole</span>
+                        <span class="item-price">R$ 20,00</span>
+                    </li>
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🥕</span> Bolo de Cenoura</span>
+                        <span class="item-price">R$ 20,00</span>
+                    </li>
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🍫</span> Bolo de Chocolate</span>
+                        <span class="item-price">R$ 20,00</span>
+                    </li>
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🍰</span> Bolo Simples</span>
+                        <span class="item-price">R$ 20,00</span>
+                    </li>
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🐜</span> Bolo Formigueiro</span>
+                        <span class="item-price">R$ 20,00</span>
+                    </li>
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🌀</span> Bolo Mesclado</span>
+                        <span class="item-price">R$ 20,00</span>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <div id="bolosVulcao" class="tab-content">
+            <section class="mb-8">
+                <h2 class="text-3xl font-bold section-title">Bolos Vulcão 🌋</h2>
+                <img src="https://placehold.co/800x250/f8bbd0/d81b60?text=Bolos+Vulcao" 
+                     alt="Bolos Vulcão" 
+                     class="section-image"
+                     onerror="this.onerror=null;this.src='https://placehold.co/800x250/f8bbd0/d81b60?text=Erro+ao+carregar+imagem';"
+                >
+                <p class="text-gray-700 mb-4">Aqueles bolos irresistíveis, com uma cascata de calda no meio!</p>
+                <ul class="space-y-3">
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🍫</span> Bolo Vulcão (sabores variados)</span>
+                        <span class="item-price">R$ 35,00</span>
+                    </li>
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🍓</span> Bolo Vulcão com Frutas e Recheios</span>
+                        <span class="item-price">R$ 45,00</span>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <div id="bolosAniversario" class="tab-content">
+            <section class="mb-8">
+                <h2 class="text-3xl font-bold section-title">Bolos de Aniversário 🎂</h2>
+                <img src="https://placehold.co/800x250/f8bbd0/d81b60?text=Bolos+de+Aniversario" 
+                     alt="Bolos de Aniversário" 
+                     class="section-image"
+                     onerror="this.onerror=null;this.src='https://placehold.co/800x250/f8bbd0/d81b60?text=Erro+ao+carregar+imagem';"
+                >
+                <p class="text-gray-700 mb-4">O bolo ideal para a sua celebração! Personalizados com a sua "plaquinha" preferida. Escolha o seu tamanho e recheio favorito!</p>
+                <ul class="space-y-3">
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">✨</span> Bolo Pequeno (P)</span>
+                        <span class="item-price">R$ 80,00</span>
+                    </li>
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🎉</span> Bolo Médio (M)</span>
+                        <span class="item-price">R$ 130,00</span>
+                    </li>
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🥳</span> Bolo Grande (G)</span>
+                        <span class="item-price">R$ 180,00</span>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <div id="docesEspeciais" class="tab-content">
+            <section class="mb-8">
+                <h2 class="text-3xl font-bold section-title">Doces Especiais 🍬</h2>
+                <img src="https://placehold.co/800x250/f8bbd0/d81b60?text=Cupcakes+e+Pirulitos" 
+                     alt="Cupcakes e Pirulitos" 
+                     class="section-image"
+                     onerror="this.onerror=null;this.src='https://placehold.co/800x250/f8bbd0/d81b60?text=Erro+ao+carregar+imagem';"
+                >
+                <p class="text-gray-700 mb-4">Nossos pequenos prazeres para qualquer ocasião.</p>
+                <ul class="space-y-3">
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🧁</span> Cupcakes (Sabores variados)</span>
+                        <span class="item-price">R$ 4,50</span>
+                    </li>
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🍭</span> Pirulitos Decorados</span>
+                        <span class="item-price">R$ 3,50</span>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <div id="caixaDocinhos" class="tab-content">
+            <section class="mb-8">
+                <h2 class="text-3xl font-bold section-title">Caixa de Docinhos 🎁</h2>
+                <img src="https://placehold.co/800x250/f8bbd0/d81b60?text=Docinhos+Variados" 
+                     alt="Docinhos Variados" 
+                     class="section-image"
+                     onerror="this.onerror=null;this.src='https://placehold.co/800x250/f8bbd0/d81b60?text=Erro+ao+carregar+imagem';"
+                >
+                <p class="text-gray-700 mb-4">Adoce o seu evento com as nossas delícias!</p>
+                <ul class="space-y-3">
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">🔟</span> Com 10 unidades</span>
+                        <span class="item-price">R$ 30,00</span>
+                    </li>
+                    <li class="flex justify-between items-center text-lg">
+                        <span class="item-name"><span class="icon">5️⃣0️⃣</span> Com 50 unidades</span>
+                        <span class="item-price">R$ 60,00</span>
+                    </li>
+                </ul>
+            </section>
+        </div>
+        
+        <!-- Seção de Orçamento (fora das abas) -->
+        <section class="mb-8 p-6 bg-pink-50 rounded-xl shadow-inner">
+            <h2 class="text-3xl font-bold section-title">Monte Seu Orçamento! 💰</h2>
+            <p class="text-gray-700 mb-4">Selecione os itens desejados para calcular o valor total:</p>
+            <div class="space-y-2" id="quote-items-list">
+                <!-- Bolos Caseiros -->
+                <div class="quote-item">
+                    <input type="checkbox" id="boloMilho" data-price="20.00" data-name="Bolo de Milho">
+                    <label for="boloMilho" class="text-lg">Bolo de Milho</label>
+                </div>
+                <div class="quote-item">
+                    <input type="checkbox" id="boloMole" data-price="20.00" data-name="Bolo Mole">
+                    <label for="boloMole" class="text-lg">Bolo Mole</label>
+                </div>
+                <div class="quote-item">
+                    <input type="checkbox" id="boloCenoura" data-price="20.00" data-name="Bolo de Cenoura">
+                    <label for="boloCenoura" class="text-lg">Bolo de Cenoura</label>
+                </div>
+                <div class="quote-item">
+                    <input type="checkbox" id="boloChocolate" data-price="20.00" data-name="Bolo de Chocolate">
+                    <label for="boloChocolate" class="text-lg">Bolo de Chocolate</label>
+                </div>
+                <div class="quote-item">
+                    <input type="checkbox" id="boloSimples" data-price="20.00" data-name="Bolo Simples">
+                    <label for="boloSimples" class="text-lg">Bolo Simples</label>
+                </div>
+                <div class="quote-item">
+                    <input type="checkbox" id="boloFormigueiro" data-price="20.00" data-name="Bolo Formigueiro">
+                    <label for="boloFormigueiro" class="text-lg">Bolo Formigueiro</label>
+                </div>
+                <div class="quote-item">
+                    <input type="checkbox" id="boloMesclado" data-price="20.00" data-name="Bolo Mesclado">
+                    <label for="boloMesclado" class="text-lg">Bolo Mesclado</label>
+                </div>
+
+                <!-- Bolos Vulcão -->
+                <div class="quote-item">
+                    <input type="checkbox" id="boloVulcao" data-price="35.00" data-name="Bolo Vulcão (sabores variados)">
+                    <label for="boloVulcao" class="text-lg">Bolo Vulcão (sabores variados)</label>
+                </div>
+                <div class="quote-item">
+                    <input type="checkbox" id="boloVulcaoFrutas" data-price="45.00" data-name="Bolo Vulcão com Frutas e Recheios">
+                    <label for="boloVulcaoFrutas" class="text-lg">Bolo Vulcão com Frutas e Recheios</label>
+                </div>
+
+                <!-- Bolos de Aniversário -->
+                <div class="quote-item">
+                    <input type="checkbox" id="boloAniversarioP" data-price="80.00" data-name="Bolo de Aniversário Pequeno (P)">
+                    <label for="boloAniversarioP" class="text-lg">Bolo de Aniversário Pequeno (P)</label>
+                </div>
+                <div class="quote-item">
+                    <input type="checkbox" id="boloAniversarioM" data-price="130.00" data-name="Bolo de Aniversário Médio (M)">
+                    <label for="boloAniversarioM" class="text-lg">Bolo de Aniversário Médio (M)</label>
+                </div>
+                <div class="quote-item">
+                    <input type="checkbox" id="boloAniversarioG" data-price="180.00" data-name="Bolo de Aniversário Grande (G)">
+                    <label for="boloAniversarioG" class="text-lg">Bolo de Aniversário Grande (G)</label>
+                </div>
+
+                <!-- Doces Especiais -->
+                <div class="quote-item">
+                    <input type="checkbox" id="cupcake" data-price="4.50" data-name="Cupcake">
+                    <label for="cupcake" class="text-lg">Cupcake</label>
+                </div>
+                <div class="quote-item">
+                    <input type="checkbox" id="pirulito" data-price="3.50" data-name="Pirulito Decorado">
+                    <label for="pirulito" class="text-lg">Pirulito Decorado</label>
+                </div>
+
+                <!-- Docinhos -->
+                <div class="quote-item">
+                    <input type="checkbox" id="docinho" data-price-10="30.00" data-price-50="60.00" data-name="Caixa de Docinhos">
+                    <label for="docinho" class="text-lg">Caixa de Docinhos</label>
+                    <select id="docinhoQuantity" class="ml-4 p-1 rounded-md border border-pink-700 bg-pink-100 text-pink-800 font-semibold" disabled>
+                        <option value="0">Selecione</option>
+                        <option value="1">10 unidades</option>
+                        <option value="5">50 unidades</option>
+                    </select>
+                </div>
+            </div>
+            <div id="totalPrice" class="total-display">
+                Total: R$ 0,00
+            </div>
+        </section>
+
+        <!-- Seção de Entrega ou Retirada -->
+        <section class="mb-8 p-6 bg-pink-50 rounded-xl shadow-inner">
+            <h2 class="text-3xl font-bold section-title">Entrega ou Retirada? 🚚</h2>
+            <p class="text-gray-700 mb-4">Escolha como deseja receber seu pedido:</p>
+            <div class="space-y-3">
+                <div class="option-item">
+                    <input type="radio" id="deliveryOption" name="deliveryPickup" value="delivery" checked>
+                    <label for="deliveryOption" class="text-lg">Entrega (Taxa fixa: R$ 5,00)</label>
+                </div>
+                <div id="deliveryAddressContainer" class="ml-8">
+                    <input type="text" id="deliveryAddress" placeholder="Seu endereço de entrega" class="address-input" required>
+                </div>
+                <div class="option-item">
+                    <input type="radio" id="pickupOption" name="deliveryPickup" value="pickup">
+                    <label for="pickupOption" class="text-lg">Retirada</label>
+                </div>
+                <div id="pickupAddressContainer" class="pickup-address hidden">
+                    <p class="font-semibold">Endereço para Retirada:</p>
+                    <p>Rua Jarder Ribeiro Parente n°117, atrás do Colégio SESC.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Formas de Pagamento -->
+        <section class="mb-8 p-6 bg-pink-50 rounded-xl shadow-inner">
+            <h2 class="text-3xl font-bold section-title">Formas de Pagamento 💳</h2>
+            <p class="text-gray-700 mb-4">Selecione a forma de pagamento desejada:</p>
+            <div class="space-y-3">
+                <div class="option-item">
+                    <input type="radio" id="paymentPix" name="paymentMethod" value="Pix" checked>
+                    <label for="paymentPix" class="text-lg"><span class="icon">✨</span> Pix</label>
+                </div>
+                <div class="option-item">
+                    <input type="radio" id="paymentDebit" name="paymentMethod" value="Cartão de Débito">
+                    <label for="paymentDebit" class="text-lg"><span class="icon">💳</span> Cartão de Débito</label>
+                </div>
+                <div class="option-item">
+                    <input type="radio" id="paymentCredit" name="paymentMethod" value="Cartão de Crédito">
+                    <label for="paymentCredit" class="text-lg"><span class="icon">💰</span> Cartão de Crédito</label>
+                </div>
+                <div class="option-item">
+                    <input type="radio" id="paymentCash" name="paymentMethod" value="Dinheiro">
+                    <label for="paymentCash" class="text-lg"><span class="icon">💵</span> Dinheiro</label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Botão de Pedido (agora no final do fluxo de seleção) -->
+        <button id="orderButton" class="order-button">Fazer Pedido via WhatsApp</button>
+
+        <!-- Seção de Contato e Redes Sociais -->
+        <section class="text-center mt-8 p-6 bg-pink-50 rounded-xl shadow-inner">
+            <h2 class="text-3xl font-bold section-title">Fale Conosco! 📞</h2>
+            <p class="text-gray-700 mb-4">Entre em contato para fazer seu pedido ou tirar dúvidas!</p>
+            <div class="flex flex-col items-center space-y-4">
+                <!-- Número de telefone e WhatsApp atualizados -->
+                <a href="tel:+5588996233484" class="text-pink-700 hover:text-pink-900 text-xl font-semibold flex items-center">
+                    <span class="icon">📞</span> Telefone: (88) 99623-3484
+                </a>
+                <a href="https://wa.me/5588996233484" target="_blank" class="text-green-600 hover:text-green-800 text-xl font-semibold flex items-center">
+                    <span class="icon">💬</span> WhatsApp: (88) 99623-3484
+                </a>
+                <a href="https://instagram.com/simonebolos" target="_blank" class="text-purple-700 hover:text-purple-900 text-xl font-semibold flex items-center">
+                    <span class="icon">📸</span> Instagram: @simonebolos
+                </a>
+            </div>
+        </section>
+
+        <!-- Rodapé -->
+        <footer class="text-center text-gray-500 mt-8 text-sm">
+            <p>&copy; 2025 Simone Bolos. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Define o número de telefone para o WhatsApp
+        const whatsappNumber = "5588996233484";
+        const deliveryFee = 5.00; // Taxa fixa de entrega
+
+        // Função para alternar as abas
+        function openTab(event, tabName) {
+            // Esconde todos os conteúdos das abas
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Remove a classe 'active' de todos os botões de aba
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => button.classList.remove('active'));
+
+            // Mostra o conteúdo da aba atual e adiciona a classe 'active' ao botão clicado
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Adiciona event listeners para os botões das abas
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function(event) {
+                openTab(event, this.dataset.tab);
+            });
+        });
+
+        // Função para calcular o total do orçamento e montar a mensagem do WhatsApp
+        function calculateTotalAndPrepareMessage() {
+            let total = 0;
+            let messageItems = []; // Array para armazenar os itens selecionados para a mensagem
+            const items = document.querySelectorAll('#quote-items-list input[type="checkbox"]');
+            
+            items.forEach(item => {
+                if (item.checked) {
+                    const itemName = item.dataset.name;
+                    let itemPrice = 0;
+                    let quantityText = "";
+
+                    if (item.id === 'docinho') {
+                        // Lógica específica para docinhos com seleção de quantidade
+                        const docinhoQuantitySelect = document.getElementById('docinhoQuantity');
+                        const selectedValue = docinhoQuantitySelect.value;
+                        if (selectedValue === '1') { // 10 unidades
+                            itemPrice = parseFloat(item.dataset.price10);
+                            quantityText = " (10 unidades)";
+                        } else if (selectedValue === '5') { // 50 unidades
+                            itemPrice = parseFloat(item.dataset.price50);
+                            quantityText = " (50 unidades)";
+                        }
+                    } else {
+                        // Para outros itens, use o data-price
+                        itemPrice = parseFloat(item.dataset.price);
+                    }
+                    
+                    if (itemPrice > 0) { // Adiciona apenas itens com preço válido
+                        total += itemPrice;
+                        messageItems.push(`${itemName}${quantityText}: R$ ${itemPrice.toFixed(2).replace('.', ',')}`);
+                    }
+                }
+            });
+
+            // Adiciona a taxa de entrega se a opção de entrega estiver selecionada
+            const deliveryOption = document.getElementById('deliveryOption');
+            let deliveryInfo = "";
+            let paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || "Não selecionado";
+
+            if (deliveryOption.checked) {
+                total += deliveryFee;
+                const deliveryAddress = document.getElementById('deliveryAddress').value.trim();
+                deliveryInfo = `\n\nOpção: Entrega\nEndereço: ${deliveryAddress || "Não informado"}\nTaxa de Entrega: R$ ${deliveryFee.toFixed(2).replace('.', ',')}`;
+            } else {
+                deliveryInfo = `\n\nOpção: Retirada\nEndereço para Retirada: Rua Jarder Ribeiro Parente n°117, atrás do Colégio SESC.`;
+            }
+
+            document.getElementById('totalPrice').innerText = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+
+            // Monta a mensagem final para o WhatsApp
+            let whatsappMessage = "Olá, gostaria de fazer o seguinte pedido:\n\n";
+            if (messageItems.length > 0) {
+                whatsappMessage += messageItems.join("\n");
+                whatsappMessage += `\n\nTotal do Pedido: R$ ${total.toFixed(2).replace('.', ',')}`;
+            } else {
+                whatsappMessage += "Nenhum item selecionado ainda. Por favor, selecione os produtos desejados.";
+            }
+            whatsappMessage += deliveryInfo;
+            whatsappMessage += `\nForma de Pagamento: ${paymentMethod}`;
+            whatsappMessage += "\n\nObrigado!";
+
+            return encodeURIComponent(whatsappMessage); // Codifica a mensagem para URL
+        }
+
+        // Adiciona event listeners para os checkboxes
+        document.querySelectorAll('#quote-items-list input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                // Habilita/desabilita o select de docinhos
+                if (this.id === 'docinho') {
+                    document.getElementById('docinhoQuantity').disabled = !this.checked;
+                    // Reseta a seleção se desmarcado
+                    if (!this.checked) {
+                        document.getElementById('docinhoQuantity').value = '0';
+                    }
+                }
+                calculateTotalAndPrepareMessage(); // Recalcula e prepara a mensagem
+            });
+        });
+
+        // Adiciona event listener para o select de docinhos
+        document.getElementById('docinhoQuantity').addEventListener('change', calculateTotalAndPrepareMessage);
+
+        // Lógica para mostrar/esconder campos de endereço e atualizar total
+        const deliveryOption = document.getElementById('deliveryOption');
+        const pickupOption = document.getElementById('pickupOption');
+        const deliveryAddressContainer = document.getElementById('deliveryAddressContainer');
+        const pickupAddressContainer = document.getElementById('pickupAddressContainer');
+        const deliveryAddressInput = document.getElementById('deliveryAddress');
+
+        function handleDeliveryPickupChange() {
+            if (deliveryOption.checked) {
+                deliveryAddressContainer.classList.remove('hidden');
+                pickupAddressContainer.classList.add('hidden');
+                deliveryAddressInput.setAttribute('required', 'true');
+            } else {
+                deliveryAddressContainer.classList.add('hidden');
+                pickupAddressContainer.classList.remove('hidden');
+                deliveryAddressInput.removeAttribute('required');
+            }
+            calculateTotalAndPrepareMessage(); // Recalcula o total ao mudar a opção
+        }
+
+        deliveryOption.addEventListener('change', handleDeliveryPickupChange);
+        pickupOption.addEventListener('change', handleDeliveryPickupChange);
+        deliveryAddressInput.addEventListener('input', calculateTotalAndPrepareMessage); // Recalcula ao digitar endereço
+
+        // Adiciona event listeners para as formas de pagamento
+        document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+            radio.addEventListener('change', calculateTotalAndPrepareMessage);
+        });
+
+        // Event listener para o botão de pedido
+        document.getElementById('orderButton').addEventListener('click', function() {
+            // Validação simples para o endereço de entrega
+            if (deliveryOption.checked && deliveryAddressInput.value.trim() === "") {
+                alert("Por favor, informe o endereço de entrega.");
+                return;
+            }
+
+            const encodedMessage = calculateTotalAndPrepareMessage();
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank'); // Abre em uma nova aba
+        });
+
+        // Inicializa o total e a visibilidade dos campos ao carregar a página
+        handleDeliveryPickupChange(); // Chama para definir o estado inicial
+        calculateTotalAndPrepareMessage();
+    </script>
+
+</body>
+</html>
